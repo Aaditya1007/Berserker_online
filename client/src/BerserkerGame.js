@@ -1,26 +1,38 @@
 import React from "react";
-import "./index.css"; // or your CSS
 
-const BOARD_SIZE = 6;
+/**
+ * Simple presentational component that renders the 6x6 board.
+ * If a cell is "red" or "white", display the corresponding .gif
+ * onCellClick => calls the parent to do makeMove via socket
+ */
+export default function BerserkerGame({ board, onCellClick }) {
+  if (!board) return null;
 
-export default function BerserkerGame({ gameState, onCellClick }) {
-  const board = gameState.board;
-  
   return (
     <div className="berserker-board">
-      {board.map((rowArr, r) =>
-        rowArr.map((cell, c) => {
-          return (
-            <div
-              key={`${r}-${c}`}
-              className="berserker-cell"
-              onClick={() => onCellClick(r, c)}
-            >
-              {cell === "red" && <img className="pawn-sprite" src="/red-pawn.gif" alt="Red" />}
-              {cell === "white" && <img className="pawn-sprite" src="/white-pawn.gif" alt="White" />}
-            </div>
-          );
-        })
+      {board.map((rowArr, rowIndex) =>
+        rowArr.map((cell, colIndex) => (
+          <div
+            key={`${rowIndex}-${colIndex}`}
+            className="berserker-cell"
+            onClick={() => onCellClick(rowIndex, colIndex)}
+          >
+            {cell === "red" && (
+              <img
+                src="/red-pawn.gif"
+                alt="Red"
+                className="pawn-sprite"
+              />
+            )}
+            {cell === "white" && (
+              <img
+                src="/white-pawn.gif"
+                alt="White"
+                className="pawn-sprite"
+              />
+            )}
+          </div>
+        ))
       )}
     </div>
   );
