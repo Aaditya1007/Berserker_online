@@ -1,27 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import GamePage from "./GamePage";
 
+/**
+ * If there's a :gameId param, we show the GamePage.
+ * Otherwise, we show a home screen with an input for the player's name
+ * and a "Create Game" button that calls our server to get a new gameId.
+ */
 export default function App() {
   const navigate = useNavigate();
-  const { gameId } = useParams(); // e.g. "/game/:gameId"
+  const { gameId } = useParams(); // e.g. /game/:gameId
+  const [name, setName] = useState("");
 
   async function handleCreateGame() {
+    // Call the server to create a new game
     const res = await fetch("http://localhost:3001/create-game");
     const data = await res.json();
-    navigate(`/game/${data.gameId}`);
+    // Navigate to /game/:gameId with the name included as a query param
+    navigate(`/game/${data.gameId}?name=${encodeURIComponent(name)}`);
   }
 
   if (gameId) {
-    // We’re in a game route
-    return <GamePage gameId={gameId} />;
+    // We are in the game route => show the game page
+    return <GamePage />;
   }
 
-  // Home screen
+  // Otherwise, home screen
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Welcome to Berserker!</h1>
-      <button onClick={handleCreateGame}>Create New Game</button>
+    <div className="container">
+      <h1>Berserker Online</h1>
+      <p>Enter your name to create a new game:</p>
+      <input
+        placeholder="Your Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <br />
+      <button onClick={handleCreateGame}>Create Game</button>
     </div>
   );
 }
