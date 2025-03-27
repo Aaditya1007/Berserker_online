@@ -6,7 +6,5 @@
     "start": "node server.js"
   },
   "license": "MIT",
-  "dependencies": {
-    ...
-  }
+  "dependencies": {}
 }
