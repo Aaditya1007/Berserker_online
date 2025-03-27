@@ -21,9 +21,9 @@ export default function ChatWindow({ messages, onSend }) {
       </div>
       <form onSubmit={handleSubmit}>
         <input
+          placeholder="Type a message..."
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Type your message..."
         />
         <button type="submit">Send</button>
       </form>
